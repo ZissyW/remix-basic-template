@@ -1,3 +1,13 @@
+import type { LinksFunction } from "@remix-run/cloudflare";
+
+export const links: LinksFunction = () => [
+  {
+    rel: "canonical",
+    href: "https://miraibogo.org/privacy-policy",
+    hrefLang: "en",
+  },
+];
+
 export default function Page() {
   return (
     <div className="pt-24 md:pt-32">

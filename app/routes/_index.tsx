@@ -1,7 +1,8 @@
-import type { MetaFunction } from "@remix-run/cloudflare";
+import type { MetaFunction, LinksFunction } from "@remix-run/cloudflare";
 
 import clsx from "clsx";
 import PageBg from "~/assets/page-bg.webp";
+import Cover from "~/assets/miraibo-go-cover.webp?url";
 import Divider from "~/assets/divider.webp";
 
 import Features1 from "~/assets/features-1.webp";
@@ -15,6 +16,10 @@ import {
   IconBrandWindows,
 } from "@tabler/icons-react";
 
+export const links: LinksFunction = () => [
+  { rel: "canonical", href: "https://miraibogo.org", hrefLang: "en" },
+];
+
 export const meta: MetaFunction = () => {
   return [
     { title: "Miraibo Go - Pal-like open-world survival game" },
@@ -23,10 +28,24 @@ export const meta: MetaFunction = () => {
       content:
         'Join forces with mysterious creatures known as "Mira" to fight, farm, build, and collaborate in this new multiplayer, open-world survival and crafting game!',
     },
+    {
+      property: "og:title",
+      content: "Miraibo Go - Pal-like open-world survival game",
+    },
+    { property: "og:site_name", content: "Miraibo Go" },
+    {
+      property: "og:description",
+      content:
+        'Join forces with mysterious creatures known as "Mira" to fight, farm, build, and collaborate in this new multiplayer, open-world survival and crafting game!',
+    },
+    {
+      property: "og:image",
+      content: Cover,
+    },
   ];
 };
 
-const links = [
+const actionLinks = [
   {
     icon: IconBrandAppstore,
     label: "App Store",
@@ -103,9 +122,9 @@ export default function Page() {
                 fierce opponents.
               </p>
               <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
-                {links.map(({ icon: Icon, ...item }, i) => (
+                {actionLinks.map(({ icon: Icon, ...item }, i) => (
                   <a
-                    className="flex items-center bg-[#2a5fb8] text-white rounded p-2"
+                    className="flex items-center bg-zinc-950 text-white rounded p-2"
                     href={item.href}
                     key={i}
                     target="_blank"
@@ -116,7 +135,7 @@ export default function Page() {
                       <p className="text-xs leading-none text-zinc-100">
                         Get it on
                       </p>
-                      <p className="text-base leading-none font-medium">
+                      <p className="text-sm leading-none font-medium whitespace-nowrap">
                         {item.label}
                       </p>
                     </div>
@@ -144,6 +163,7 @@ export default function Page() {
           <img
             className="w-full h-full object-bottom object-cover select-none pointer-events-none"
             src={PageBg}
+            alt="background of miraibo go website"
           />
         </div>
       </div>
@@ -174,7 +194,7 @@ export default function Page() {
                     })}
                   >
                     <div className="p-2">
-                      <img src={feature.thumbnail} />
+                      <img src={feature.thumbnail} alt={feature.title} />
                     </div>
                     <div className="p-4">
                       <h3 className="text-2xl font-bold">{feature.title}</h3>
