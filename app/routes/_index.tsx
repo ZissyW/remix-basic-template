@@ -1,138 +1,427 @@
 import type { MetaFunction } from "@remix-run/cloudflare";
 
+import clsx from "clsx";
+import PageBg from "~/assets/page-bg.webp";
+import Divider from "~/assets/divider.webp";
+
+import Features1 from "~/assets/features-1.webp";
+import Features3 from "~/assets/features-3.webp";
+import Features4 from "~/assets/features-4.webp";
+import Features5 from "~/assets/features-5.webp";
+
+import {
+  IconBrandAppstore,
+  IconBrandGooglePlay,
+  IconBrandWindows,
+} from "@tabler/icons-react";
+
 export const meta: MetaFunction = () => {
   return [
-    { title: "New Remix App" },
-    { name: "description", content: "Welcome to Remix!" },
+    { title: "Miraibo Go - Pal-like open-world survival game" },
+    {
+      name: "description",
+      content:
+        'Join forces with mysterious creatures known as "Mira" to fight, farm, build, and collaborate in this new multiplayer, open-world survival and crafting game!',
+    },
   ];
 };
 
-export default function Index() {
+const links = [
+  {
+    icon: IconBrandAppstore,
+    label: "App Store",
+    href: "https://apps.apple.com/us/app/miraibo-go/id6547850275",
+  },
+  {
+    icon: IconBrandGooglePlay,
+    label: "Google Play",
+    href: "https://play.google.com/store/apps/details?id=com.dream.miraibo",
+  },
+  {
+    icon: IconBrandWindows,
+    label: "PC Platform",
+    href: "https://miraibo.onelink.me/Z2Cz/uczpnr9s",
+  },
+];
+
+const features = [
+  {
+    title: "Tame the Miras",
+    description:
+      "Over 100 Miras with different skills and elements can be battled and caught to accompany you on your adventure across an expansive Miraibo Go world.",
+    thumbnail: Features1,
+  },
+  {
+    title: "Build without limits",
+    description:
+      "Assign Miras to different tasks based on their skills, including farming, gathering, and construction. But be sure to look after your Miras to keep them in fighting shape.",
+    thumbnail: Features3,
+  },
+  {
+    title: "Mounted Exploration",
+    description:
+      "Explore, farm, build and fight alongside your miras and explore the open world!",
+    thumbnail: Features4,
+  },
+  {
+    title: "Multiplayer Battle",
+    description:
+      "Go alone or forge alliances with friends and your favorite content creators to survive this dangerous world.",
+    thumbnail: Features5,
+  },
+];
+
+const dives = [
+  { title: "Tame the Miras", description: "Hundreds of Miras await you!" },
+  {
+    title: "Build without Limits",
+    description: "Live together with your tame miras!",
+  },
+  {
+    title: "Mounted Exploration",
+    description: "Fight alongside your tame monsters!",
+  },
+  {
+    title: "Multiplayer Battle",
+    description: "Explore and adventure with your friends!",
+  },
+];
+
+export default function Page() {
   return (
-    <div className="flex h-screen items-center justify-center">
-      <div className="flex flex-col items-center gap-16">
-        <header className="flex flex-col items-center gap-9">
-          <h1 className="leading text-2xl font-bold text-gray-800 dark:text-gray-100">
-            Welcome to <span className="sr-only">Remix</span>
-          </h1>
-          <div className="h-[144px] w-[434px]">
-            <img
-              src="/logo-light.png"
-              alt="Remix"
-              className="block w-full dark:hidden"
-            />
-            <img
-              src="/logo-dark.png"
-              alt="Remix"
-              className="hidden w-full dark:block"
-            />
+    <div className="bg-zinc-50">
+      <div className="relative">
+        <div className="container relative z-10">
+          <div className="flex flex-col-reverse md:flex-row items-center gap-4 md:gap-6 pt-24 md:pt-32 pb-32 lg:pb-36">
+            <div className="flex-[2] min-w-0 w-full">
+              <h1 className="text-3xl font-bold mb-4">
+                Miraibo Go - Pal-like open-world survival game
+              </h1>
+              <p className="text-base text-zinc-700 mb-6">
+                Dive into the world of Miraibo Go, embark on an epic adventure,
+                uncover hidden treasures, conquer the Miraibo world, battle
+                fierce opponents.
+              </p>
+              <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
+                {links.map(({ icon: Icon, ...item }, i) => (
+                  <a
+                    className="flex items-center bg-[#2a5fb8] text-white rounded p-2"
+                    href={item.href}
+                    key={i}
+                    target="_blank"
+                    title={item.label}
+                  >
+                    <Icon className="mr-2" size={36} />
+                    <div>
+                      <p className="text-xs leading-none text-zinc-100">
+                        Get it on
+                      </p>
+                      <p className="text-base leading-none font-medium">
+                        {item.label}
+                      </p>
+                    </div>
+                  </a>
+                ))}
+              </div>
+              <p className="text-xs text-zinc-500 mt-2">
+                Miraibo Go is free to play on mobile devices and PC and offers
+                cross-platform gaming support.
+              </p>
+            </div>
+            <div className="flex-[2] xl:flex-[3] min-w-0 w-full aspect-video">
+              <iframe
+                className="w-full h-full rounded"
+                src="https://www.youtube.com/embed/d1PMlQME8fw?si=ZT6gQC37TVNjZtQq"
+                title="The mobile monster-themed open world survival game available now!"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                referrerPolicy="strict-origin-when-cross-origin"
+                allowFullScreen
+              />
+            </div>
           </div>
-        </header>
-        <nav className="flex flex-col items-center justify-center gap-4 rounded-3xl border border-gray-200 p-6 dark:border-gray-700">
-          <p className="leading-6 text-gray-700 dark:text-gray-200">
-            What&apos;s next?
+        </div>
+        <div className="absolute inset-y-0 inset-x-0 opacity-20">
+          <img
+            className="w-full h-full object-bottom object-cover select-none pointer-events-none"
+            src={PageBg}
+          />
+        </div>
+      </div>
+
+      <div className="container max-w-screen-xl">
+        <div className="mb-8">
+          <h2 className="text-3xl font-bold text-center mb-2">
+            What awaits you in Miraibo Go
+          </h2>
+          <p className="text-base text-zinc-700 text-center max-w-3xl mx-auto">
+            Fight, farm, build and work alongside mysterious creatures called
+            "Mira" in this completely new multiplayer, open world survival and
+            crafting game!
           </p>
-          <ul>
-            {resources.map(({ href, text, icon }) => (
-              <li key={href}>
-                <a
-                  className="group flex items-center gap-3 self-stretch p-3 leading-normal text-blue-700 hover:underline dark:text-blue-500"
-                  href={href}
-                  target="_blank"
-                  rel="noreferrer"
-                >
-                  {icon}
-                  {text}
-                </a>
+        </div>
+
+        <div className="flex flex-col md:flex-row gap-4">
+          {[
+            features.filter((_, i) => i % 2 === 0),
+            features.filter((_, i) => i % 2 !== 0),
+          ].map((features, i) => {
+            return (
+              <ul className="flex-1 min-w-0 flex flex-col gap-4">
+                {features.map((feature) => (
+                  <li
+                    className={clsx("flex flex-col bg-white", {
+                      "md:flex-col-reverse": i % 2 !== 0,
+                    })}
+                  >
+                    <div className="p-2">
+                      <img src={feature.thumbnail} />
+                    </div>
+                    <div className="p-4">
+                      <h3 className="text-2xl font-bold">{feature.title}</h3>
+                      <p className="text-base text-zinc-700">
+                        {feature.description}
+                      </p>
+                    </div>
+                  </li>
+                ))}
+              </ul>
+            );
+          })}
+        </div>
+      </div>
+      <div className="my-4">
+        <img
+          className="w-full object-cover md:object-contain max-h-28 mix-blend-darken my-4"
+          src={Divider}
+          alt="divider"
+        />
+      </div>
+
+      <div className="container mb-16">
+        <div className="mb-8">
+          <h2 className="text-3xl font-bold text-center mb-2">
+            Dive into the world of Miraibo Go
+          </h2>
+          <p className="text-base text-zinc-700 text-center max-w-3xl mx-auto">
+            Discover a new kind of Pokémon experience with Miraibo Go! Capture
+            wild Mira, and challenge powerful bosses in this innovative
+            open-world game.
+          </p>
+        </div>
+
+        <div>
+          <ul className="grid grid-cols-1 md:grid-cols-4 gap-4">
+            {dives.map((dive, i) => (
+              <li className="border bg-white rounded p-3" key={i}>
+                <h3 className="text-lg font-medium">{dive.title}</h3>
+                <p className="text-sm">{dive.description}</p>
               </li>
             ))}
           </ul>
-        </nav>
+        </div>
+      </div>
+
+      <div className="container">
+        <div className="max-w-screen-md mx-auto pb-16">
+          <h2 className="text-3xl font-bold text-center mb-2">
+            Miraibo Go Creator Program
+          </h2>
+          <p className="text-base text-zinc-700 text-center max-w-3xl mx-auto">
+            The Miraibo Go Creator Program is a unique community of content
+            creators focused on producing engaging and high-quality content for
+            the dynamic world of Miraibo!
+          </p>
+          <div className="max-w-screen-sm mt-6 mx-auto">
+            <a
+              className="w-96 mx-auto flex items-center justify-center bg-[#2a5fb8] text-white rounded p-2 mb-4"
+              href="#"
+            >
+              Learn More for Miraibo Go Creator Program
+            </a>
+            <p className="text-xs text-center text-zinc-600">
+              Whether you're a Youtuber, Streamer or Blogger, we want to build
+              the world of Miraibo Go with you.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div className="bg-white">
+        <div className="container max-w-screen-xl py-16">
+          <div className="mb-8">
+            <h2 className="text-3xl font-bold text-center mb-2">
+              Miraibo Go Loved by people worldwide
+            </h2>
+            <p className="text-base text-zinc-700 text-center max-w-3xl mx-auto">
+              Join the Miraibo Go craze and explore, fight, build and work with
+              Mira!
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            {userReviewList.map((reviewList, i) => {
+              return (
+                <ul className="flex flex-col gap-4">
+                  {reviewList.map((reviewItem) => {
+                    return (
+                      <li
+                        className="p-4 bg-white rounded border border-zinc-100 relative shadow-lg shadow-zinc-200/30"
+                        key={i}
+                      >
+                        <p className="font-bold text-base">
+                          {reviewItem.title}
+                        </p>
+                        <p className="text-sm text-zinc-700">
+                          {reviewItem.content}
+                        </p>
+                        <p className="mt-4 text-xs text-zinc-400">
+                          {reviewItem.user}
+                        </p>
+                      </li>
+                    );
+                  })}
+                </ul>
+              );
+            })}
+          </div>
+        </div>
+      </div>
+      <div className="bg-white">
+        <div className="container max-w-screen-xl py-16">
+          <h2 className="text-3xl font-bold text-center mb-2">
+            Miraibo Go FAQs
+          </h2>
+
+          <div>
+            <h3 className="text-xl text-zinc-700 text-center max-w-3xl mx-auto">
+              About Miraibo Go Game Content
+            </h3>
+            <ul className="max-w-2xl w-full mx-auto mt-4">
+              {faqs.map((faq, i) => (
+                <li className="mb-4 last-of-type:mb-0" key={i}>
+                  <h4 className="text-lg font-bold">{faq.question}</h4>
+                  <p>{faq.answer}</p>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
       </div>
     </div>
   );
 }
 
-const resources = [
+const userReviewList: {
+  title: string;
+  content: string;
+  rating: number;
+  user: string;
+}[][] = [
+  [
+    {
+      title: "Palworld mobile",
+      content:
+        "To everyone complaining about the game allowing you to download before the game is actually live welcome to mobile gaming! That’s how it works a lot of the time now. The game still went live a day before expected release. As far as the game goes it’s literally palworld with different creatures. Almost every other aspect is exactly the same. It’s not bad but I think a little too ambitious for mobile. Game suffers a little from the controls being small. Probably better on a tablet. Overall though really cool",
+      rating: 5,
+      user: "blade11235",
+    },
+    {
+      title: "One of the best game of the year",
+      content:
+        "I downloaded this game because I thought it looked interesting and that it looks a lot like a free version of Palworld. it’s a really fun game and seeing as how it just came out there are a few bugs but what new game doesn’t. I would definitely check out this game if you are bored and just wanna have a fun game to play here and there.",
+      rating: 5,
+      user: "TangentJoker",
+    },
+  ],
+  [
+    {
+      title: "Great game, controls are cluttered",
+      content:
+        "The game is great. I’m not sure why people are complaining about it. You can have your own world for your guild and it’s really helpful. The game has been fun and doesn’t seem to be pay to win, most of the stuff is cosmetic. Some of the enemies are quite difficult but I enjoy a good challenge.",
+      rating: 5,
+      user: "DocWild_1",
+    },
+    {
+      title: "Gameplay",
+      content:
+        "So far I keep getting booted, then I’ll have to completely restart. It’s good otherwise but I think the layout should be “sideways” to have room for commands. Also if I do get into a lobby it takes forever to catch one creature, so having to restart on a constant is extremely frustrating.",
+      rating: 5,
+      user: "kinkyteddy69",
+    },
+    {
+      title: "Lol game",
+      content:
+        "Game just launched globally and I have great expectations already. The opening screen is fully animated and looks great and so far the experience of simply getting the game started is way less tedious than most other games I’ve played of this sort.",
+      rating: 4,
+      user: "chaaaaaaazoid",
+    },
+  ],
+  [
+    {
+      title: "Has potential",
+      content:
+        "The game definitely has potential and sparks my interest. Also, you can play in landscape mode. There is a direct button on the gameplay screen (not hidden away in the settings) that orients the gameplay.",
+      rating: 4,
+      user: "jason_nato",
+    },
+
+    {
+      title: "You need this game",
+      content: "anyways here's a couple of my favorite sprites from Miraibo Go",
+      rating: 5,
+      user: "PrepareToHi",
+    },
+    {
+      title: "Wish I could give 6 stars",
+      content:
+        "I can't believe I caught this ON STREAM, I'm so addicted to Miraibo Go",
+      rating: 5,
+      user: "Arar_VT",
+    },
+    {
+      title: "It knows what I like",
+      content:
+        "I decided against my better judgement to go live at 8:30 AM because i cannot stop playing Miraibo Go and holy shit it's so good",
+      rating: 5,
+      user: "Yoshiality",
+    },
+  ],
+];
+
+const faqs = [
   {
-    href: "https://remix.run/start/quickstart",
-    text: "Quick Start (5 min)",
-    icon: (
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        width="24"
-        height="20"
-        viewBox="0 0 20 20"
-        fill="none"
-        className="stroke-gray-600 group-hover:stroke-current dark:stroke-gray-300"
-      >
-        <path
-          d="M8.51851 12.0741L7.92592 18L15.6296 9.7037L11.4815 7.33333L12.0741 2L4.37036 10.2963L8.51851 12.0741Z"
-          strokeWidth="1.5"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        />
-      </svg>
-    ),
+    question: "Can I play Miraibo Go with my friends?",
+    answer:
+      "Yes, Miraibo Go has full shared-world multiplayer. you can play the game with your friends!",
   },
+
   {
-    href: "https://remix.run/start/tutorial",
-    text: "Tutorial (30 min)",
-    icon: (
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        width="24"
-        height="20"
-        viewBox="0 0 20 20"
-        fill="none"
-        className="stroke-gray-600 group-hover:stroke-current dark:stroke-gray-300"
-      >
-        <path
-          d="M4.561 12.749L3.15503 14.1549M3.00811 8.99944H1.01978M3.15503 3.84489L4.561 5.2508M8.3107 1.70923L8.3107 3.69749M13.4655 3.84489L12.0595 5.2508M18.1868 17.0974L16.635 18.6491C16.4636 18.8205 16.1858 18.8205 16.0144 18.6491L13.568 16.2028C13.383 16.0178 13.0784 16.0347 12.915 16.239L11.2697 18.2956C11.047 18.5739 10.6029 18.4847 10.505 18.142L7.85215 8.85711C7.75756 8.52603 8.06365 8.21994 8.39472 8.31453L17.6796 10.9673C18.0223 11.0653 18.1115 11.5094 17.8332 11.7321L15.7766 13.3773C15.5723 13.5408 15.5554 13.8454 15.7404 14.0304L18.1868 16.4767C18.3582 16.6481 18.3582 16.926 18.1868 17.0974Z"
-          strokeWidth="1.5"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        />
-      </svg>
-    ),
+    question: "Where can I play Miraibo Go?",
+    answer:
+      "Miraibo Go is currently playable PC, iOS Device, Android Device with crossplay support.",
   },
+
   {
-    href: "https://remix.run/docs",
-    text: "Remix Docs",
-    icon: (
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        width="24"
-        height="20"
-        viewBox="0 0 20 20"
-        fill="none"
-        className="stroke-gray-600 group-hover:stroke-current dark:stroke-gray-300"
-      >
-        <path
-          d="M9.99981 10.0751V9.99992M17.4688 17.4688C15.889 19.0485 11.2645 16.9853 7.13958 12.8604C3.01467 8.73546 0.951405 4.11091 2.53116 2.53116C4.11091 0.951405 8.73546 3.01467 12.8604 7.13958C16.9853 11.2645 19.0485 15.889 17.4688 17.4688ZM2.53132 17.4688C0.951566 15.8891 3.01483 11.2645 7.13974 7.13963C11.2647 3.01471 15.8892 0.951453 17.469 2.53121C19.0487 4.11096 16.9854 8.73551 12.8605 12.8604C8.73562 16.9853 4.11107 19.0486 2.53132 17.4688Z"
-          strokeWidth="1.5"
-          strokeLinecap="round"
-        />
-      </svg>
-    ),
+    question: "Can I play Miraibo Go on different devices?",
+    answer:
+      "Yes, Miraibo Go offers cross-platform play support so the adventure can enjoyed at home and on the go, and the game is free to play on both mobile and PC.",
   },
+
   {
-    href: "https://rmx.as/discord",
-    text: "Join Discord",
-    icon: (
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        width="24"
-        height="20"
-        viewBox="0 0 24 20"
-        fill="none"
-        className="stroke-gray-600 group-hover:stroke-current dark:stroke-gray-300"
-      >
-        <path
-          d="M15.0686 1.25995L14.5477 1.17423L14.2913 1.63578C14.1754 1.84439 14.0545 2.08275 13.9422 2.31963C12.6461 2.16488 11.3406 2.16505 10.0445 2.32014C9.92822 2.08178 9.80478 1.84975 9.67412 1.62413L9.41449 1.17584L8.90333 1.25995C7.33547 1.51794 5.80717 1.99419 4.37748 2.66939L4.19 2.75793L4.07461 2.93019C1.23864 7.16437 0.46302 11.3053 0.838165 15.3924L0.868838 15.7266L1.13844 15.9264C2.81818 17.1714 4.68053 18.1233 6.68582 18.719L7.18892 18.8684L7.50166 18.4469C7.96179 17.8268 8.36504 17.1824 8.709 16.4944L8.71099 16.4904C10.8645 17.0471 13.128 17.0485 15.2821 16.4947C15.6261 17.1826 16.0293 17.8269 16.4892 18.4469L16.805 18.8725L17.3116 18.717C19.3056 18.105 21.1876 17.1751 22.8559 15.9238L23.1224 15.724L23.1528 15.3923C23.5873 10.6524 22.3579 6.53306 19.8947 2.90714L19.7759 2.73227L19.5833 2.64518C18.1437 1.99439 16.6386 1.51826 15.0686 1.25995ZM16.6074 10.7755L16.6074 10.7756C16.5934 11.6409 16.0212 12.1444 15.4783 12.1444C14.9297 12.1444 14.3493 11.6173 14.3493 10.7877C14.3493 9.94885 14.9378 9.41192 15.4783 9.41192C16.0471 9.41192 16.6209 9.93851 16.6074 10.7755ZM8.49373 12.1444C7.94513 12.1444 7.36471 11.6173 7.36471 10.7877C7.36471 9.94885 7.95323 9.41192 8.49373 9.41192C9.06038 9.41192 9.63892 9.93712 9.6417 10.7815C9.62517 11.6239 9.05462 12.1444 8.49373 12.1444Z"
-          strokeWidth="1.5"
-        />
-      </svg>
-    ),
+    question: "Do Mira evolve in Miraibo Go?",
+    answer:
+      "No, miras in Miraibo Go do not evolve. What you see is what you get.",
+  },
+
+  {
+    question: "How many Mira in Miraibo Go?",
+    answer:
+      "The hundreds Miras can be battled and caught across an expansive Miraibo Go open world",
+  },
+
+  {
+    question: "Does Miraibo Go support crossplay?",
+    answer:
+      "Yes, Miraibo Go offers cross-platform play support, you can enjoy it at home and on the go.",
   },
 ];

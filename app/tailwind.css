@@ -10,3 +10,32 @@ body {
     color-scheme: dark;
   }
 }
+
+article {
+  @apply leading-6;
+}
+
+article h2 {
+  @apply text-2xl font-bold mt-4 mb-1;
+}
+article h3 {
+  @apply text-xl font-bold mt-4 mb-1;
+}
+article h4 {
+  @apply text-lg font-bold mt-3 mb-1;
+}
+article h5 {
+  @apply text-base font-bold mt-3 mb-1;
+}
+
+article p {
+  @apply my-2;
+}
+
+article ul {
+  @apply list-disc list-inside;
+}
+
+article ol {
+  @apply list-decimal list-inside;
+}
