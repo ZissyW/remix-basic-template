@@ -10,7 +10,7 @@ export const createLanguages = (url: URL, onlyDefaultLocale: boolean) => {
 
     if (onlyDefaultLocale && locale !== defaultLocale) return;
     if (locale !== defaultLocale) href.push(locale);
-    href.push(pathname);
+    if (pathname) href.push(pathname);
 
     languageList.push({
       tagName: "link",
@@ -30,7 +30,7 @@ export const createCanonical = (
 ): MetaDescriptor => {
   const href = [url.origin];
   if (locale !== defaultLocale) href.push(locale);
-  href.push(pathname);
+  if (pathname) href.push(pathname);
 
   return {
     tagName: "link",
