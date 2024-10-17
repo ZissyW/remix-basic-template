@@ -6,7 +6,18 @@ import {
 import { loader } from "~/root";
 
 export const defaultLocale = "en";
-export const locales = ["en", "zh"];
+export const locales = [
+  "en",
+  "zh",
+  "ja",
+  "ko",
+  "fr",
+  "de",
+  "es",
+  "it",
+  "ru",
+  "pt",
+];
 
 export const localeData = [
   { code: "en", name: "English", flag: "🇬🇧" },
