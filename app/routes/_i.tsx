@@ -1,12 +1,16 @@
-import { useRouteError, isRouteErrorResponse } from "@remix-run/react";
+import {
+  useRouteError,
+  isRouteErrorResponse,
+  useLoaderData,
+} from "@remix-run/react";
 
 import type { LoaderFunctionArgs } from "@remix-run/cloudflare";
 import { Outlet, redirect } from "@remix-run/react";
 
-import { Header, Footer } from "~/components";
+import { Header, Footer } from "~/components/_i";
 
 import { defaultLocale, locales } from "~/i18n";
-import { loader as rootLoader } from "~/root";
+import { getMessage, useTranslations } from "~/locales";
 
 export async function loader({ request, params }: LoaderFunctionArgs) {
   const lang = params?.lang;
@@ -24,16 +28,31 @@ export async function loader({ request, params }: LoaderFunctionArgs) {
     });
   }
 
-  return null;
+  const messages = await getMessage(lang);
+
+  return { messages };
 }
 
 export function ErrorBoundary() {
   const error = useRouteError();
   const isError404 = isRouteErrorResponse(error) && error.status === 404;
 
+  const loaderData = useLoaderData<typeof loader>();
+  const t = useTranslations(loaderData.messages);
+
+  const headerNavLinks = headerLinks.map((item) => ({
+    path: item.path,
+    label: t(`header.nav.${item.key}`),
+  }));
+
+  const footerNavLinks = footerLinks.map((item) => ({
+    path: item.path,
+    label: t(`footer.nav.${item.key}`),
+  }));
+
   return (
     <div className="h-screen flex flex-col">
-      <Header className="h-20" navLinks={headerLinks} />
+      <Header className="h-20" navLinks={headerNavLinks} />
       {isError404 && (
         <main className="flex-1 min-h-0 pt-20 flex flex-col justify-center">
           <div className="container mx-auto">
@@ -60,29 +79,42 @@ export function ErrorBoundary() {
           </div>
         </main>
       )}
-      <Footer navLinks={footerLinks} />
+      <Footer navLinks={footerNavLinks} />
     </div>
   );
 }
 
 export default function Layout() {
+  const loaderData = useLoaderData<typeof loader>();
+  const t = useTranslations(loaderData.messages);
+
+  const headerNavLinks = headerLinks.map((item) => ({
+    path: item.path,
+    label: t(`header.nav.${item.key}`),
+  }));
+
+  const footerNavLinks = footerLinks.map((item) => ({
+    path: item.path,
+    label: t(`footer.nav.${item.key}`),
+  }));
+
   return (
     <div>
-      <Header className="h-20" navLinks={headerLinks} />
+      <Header className="h-20" navLinks={headerNavLinks} />
       <main>{<Outlet />}</main>
-      <Footer navLinks={footerLinks} />
+      <Footer navLinks={footerNavLinks} />
     </div>
   );
 }
 
 const headerLinks = [
-  { path: "/", label: "Home" },
-  { path: "/privacy-policy", label: "Privacy Policy" },
-  { path: "/terms-of-service", label: "Terms of Service" },
+  { path: "/", key: "home" },
+  { path: "/#features", key: "features" },
+  { path: "/#review", key: "review" },
+  { path: "/#faqs", key: "faqs" },
 ];
-
 const footerLinks = [
-  { path: "/", label: "Home" },
-  { path: "/privacy-policy", label: "Privacy Policy" },
-  { path: "/terms-of-service", label: "Terms of Service" },
+  { path: "/", key: "home" },
+  { path: "/privacy-policy", key: "privacy-policy" },
+  { path: "/terms-of-service", key: "terms-of-service" },
 ];

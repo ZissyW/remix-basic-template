@@ -6,10 +6,7 @@ import {
   Scripts,
   ScrollRestoration,
   useLoaderData,
-  useRouteError,
-  isRouteErrorResponse,
 } from "@remix-run/react";
-import { Header, Footer } from "~/components";
 import { defaultLocale, locales } from "~/i18n";
 
 import "./tailwind.css";

@@ -1,6 +1,6 @@
 import clsx from "clsx";
 import { useMemo, useState } from "react";
-import { NavLink } from "@remix-run/react";
+import { Link } from "~/i18n";
 import { IconMenu2, IconX } from "@tabler/icons-react";
 import { useWindowScroll } from "~/hooks";
 
@@ -41,9 +41,9 @@ export const Header = ({ className, navLinks, ...props }: HeaderProps) => {
         <MobileNav className="md:hidden" navLinks={navLinks} />
         <nav className="hidden md:flex gap-4">
           {navLinks.map((link) => (
-            <NavLink className="hover:underline" to={link.path} key={link.path}>
+            <Link className="hover:underline" to={link.path} key={link.path}>
               {link.label}
-            </NavLink>
+            </Link>
           ))}
         </nav>
       </div>
@@ -87,14 +87,14 @@ const MobileNav = ({ className, navLinks, ...props }: MobileNavProps) => {
             <div className="mt-4 p-2 pb-5">
               <nav className="flex flex-col gap-3">
                 {navLinks.map((link) => (
-                  <NavLink
+                  <Link
                     className="px-2 text-lg rounded"
                     key={link.path}
                     to={link.path}
                     onClick={close}
                   >
                     {link.label}
-                  </NavLink>
+                  </Link>
                 ))}
               </nav>
             </div>

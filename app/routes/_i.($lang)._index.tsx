@@ -146,7 +146,7 @@ export default function Page() {
         </div>
       </div>
 
-      <div className="container max-w-screen-xl">
+      <div id="features" className="container max-w-screen-xl py-24">
         <div className="mb-8">
           <h2 className="text-3xl font-bold text-center mb-2">
             {t("features.heading")}
@@ -238,8 +238,8 @@ export default function Page() {
         </div>
       </div>
 
-      <div className="bg-white">
-        <div className="container max-w-screen-xl py-16">
+      <div id="review" className="bg-white">
+        <div className="container max-w-screen-xl py-24">
           <div className="mb-8">
             <h2 className="text-3xl font-bold text-center mb-2">
               {t("social-proof.heading")}
@@ -277,7 +277,7 @@ export default function Page() {
           </div>
         </div>
       </div>
-      <div className="bg-white">
+      <div id="faqs" className="bg-white">
         <div className="container max-w-screen-xl py-16">
           <h2 className="text-3xl font-bold text-center mb-2">
             {t("faqs.heading")}
