@@ -1,17 +1,42 @@
-import type { LinksFunction } from "@remix-run/cloudflare";
+import type {
+  MetaFunction,
+  MetaDescriptor,
+  LoaderFunctionArgs,
+} from "@remix-run/cloudflare";
+import { createSeoMetas } from "~/utils/seo";
 
-export const links: LinksFunction = () => [
-  {
-    rel: "canonical",
-    href: "https://miraibogo.org/privacy-policy",
-    hrefLang: "en",
-  },
-];
+export const meta: MetaFunction<typeof loader> = ({ data }) => {
+  if (!data) return [];
+
+  const meta: MetaDescriptor[] = [
+    { title: data.meta.title },
+    {
+      name: "description",
+      content: data.meta.description,
+    },
+  ];
+
+  meta.push(...data.seoMetas);
+
+  return meta;
+};
+
+export const loader = async ({ request, params }: LoaderFunctionArgs) => {
+  const seoMetas = createSeoMetas(new URL(request.url), true);
+
+  const meta = {
+    title: "Privacy Policy for Miraigo Go",
+    description:
+      " Welcome to miraibogo.org! Your privacy is important to us. This Privacy Policy explains how we collect, use, protect, and handle your personal information on our website located. This policy applies to all users of the Website.",
+  };
+
+  return { meta, seoMetas };
+};
 
 export default function Page() {
   return (
     <div className="pt-24 md:pt-32">
-      <div className="container max-w-screen-lg">
+      <div className="container">
         <article>
           <h1 className="text-3xl font-bold mb-2">
             Privacy Policy for Miraigo Go
@@ -24,7 +49,7 @@ export default function Page() {
               day: "numeric",
             })}
           </p>
-          <div className="mt-8">
+          <div className="mt-8 max-w-5xl">
             <p>
               Welcome to miraibogo.org! Your privacy is important to us. This
               Privacy Policy explains how we collect, use, protect, and handle

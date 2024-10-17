@@ -1,6 +1,14 @@
-import type { MetaFunction, LinksFunction } from "@remix-run/cloudflare";
+import {
+  MetaFunction,
+  LoaderFunctionArgs,
+  MetaDescriptor,
+} from "@remix-run/cloudflare";
 
 import clsx from "clsx";
+import { useLoaderData } from "@remix-run/react";
+
+import { createSeoMetas } from "~/utils/seo";
+
 import PageBg from "~/assets/page-bg.webp";
 import Cover from "~/assets/miraibo-go-cover.webp?url";
 import Divider from "~/assets/divider.webp";
@@ -11,115 +19,86 @@ import Features4 from "~/assets/features-4.webp";
 import Features5 from "~/assets/features-5.webp";
 
 import {
+  getTranslations,
+  getMessage,
+  useTranslations,
+  type LANG,
+} from "~/locales";
+
+import {
   IconBrandAppstore,
   IconBrandGooglePlay,
   IconBrandWindows,
 } from "@tabler/icons-react";
 
-export const links: LinksFunction = () => [
-  { rel: "canonical", href: "https://miraibogo.org", hrefLang: "en" },
-];
+export const meta: MetaFunction<typeof loader> = ({ data }) => {
+  if (!data) return [];
 
-export const meta: MetaFunction = () => {
-  return [
-    { title: "Miraibo Go - Pal-like open-world survival game" },
+  const meta: MetaDescriptor[] = [
+    { title: data.meta.title },
     {
       name: "description",
-      content:
-        'Join forces with mysterious creatures known as "Mira" to fight, farm, build, and collaborate in this new multiplayer, open-world survival and crafting game!',
+      content: data.meta.description,
     },
     {
       property: "og:title",
-      content: "Miraibo Go - Pal-like open-world survival game",
+      content: data.meta.ogTitle,
     },
-    { property: "og:site_name", content: "Miraibo Go" },
+    { property: "og:site_name", content: data.meta.ogSiteName },
     {
       property: "og:description",
-      content:
-        'Join forces with mysterious creatures known as "Mira" to fight, farm, build, and collaborate in this new multiplayer, open-world survival and crafting game!',
+      content: data.meta.ogDescription,
     },
     {
       property: "og:image",
       content: Cover,
     },
   ];
+
+  meta.push(...data.seoMetas);
+
+  return meta;
 };
 
-const actionLinks = [
-  {
-    icon: IconBrandAppstore,
-    label: "App Store",
-    href: "https://apps.apple.com/us/app/miraibo-go/id6547850275",
-  },
-  {
-    icon: IconBrandGooglePlay,
-    label: "Google Play",
-    href: "https://play.google.com/store/apps/details?id=com.dream.miraibo",
-  },
-  {
-    icon: IconBrandWindows,
-    label: "PC Platform",
-    href: "https://miraibo.onelink.me/Z2Cz/uczpnr9s",
-  },
-];
+export const loader = async ({ request, params }: LoaderFunctionArgs) => {
+  const t = await getTranslations(params.lang, "home.meta");
+  const messages = await getMessage<LANG["home"]["content"]>(
+    params.lang,
+    "home.content"
+  );
+  const seoMetas = createSeoMetas(new URL(request.url), false, params.lang);
 
-const features = [
-  {
-    title: "Tame the Miras",
-    description:
-      "Over 100 Miras with different skills and elements can be battled and caught to accompany you on your adventure across an expansive Miraibo Go world.",
-    thumbnail: Features1,
-  },
-  {
-    title: "Build without limits",
-    description:
-      "Assign Miras to different tasks based on their skills, including farming, gathering, and construction. But be sure to look after your Miras to keep them in fighting shape.",
-    thumbnail: Features3,
-  },
-  {
-    title: "Mounted Exploration",
-    description:
-      "Explore, farm, build and fight alongside your miras and explore the open world!",
-    thumbnail: Features4,
-  },
-  {
-    title: "Multiplayer Battle",
-    description:
-      "Go alone or forge alliances with friends and your favorite content creators to survive this dangerous world.",
-    thumbnail: Features5,
-  },
-];
+  const meta = {
+    title: t("title"),
+    description: t("description"),
+    ogTitle: t("og:title"),
+    ogSiteName: t("og:site_name"),
+    ogDescription: t("og:description"),
+  };
 
-const dives = [
-  { title: "Tame the Miras", description: "Hundreds of Miras await you!" },
-  {
-    title: "Build without Limits",
-    description: "Live together with your tame miras!",
-  },
-  {
-    title: "Mounted Exploration",
-    description: "Fight alongside your tame monsters!",
-  },
-  {
-    title: "Multiplayer Battle",
-    description: "Explore and adventure with your friends!",
-  },
-];
+  return { meta, seoMetas, messages };
+};
 
 export default function Page() {
+  const loaderData = useLoaderData<typeof loader>();
+
+  const t = useTranslations(loaderData.messages);
+  const features = loaderData.messages.features.list.map((item, i) => ({
+    ...item,
+    thumbnail: featuresThumbnail[i],
+  }));
+
+  const dives = loaderData.messages.dives.list;
+
   return (
     <div className="bg-zinc-50">
       <div className="relative">
         <div className="container relative z-10">
           <div className="flex flex-col-reverse md:flex-row items-center gap-4 md:gap-6 pt-24 md:pt-32 pb-32 lg:pb-36">
             <div className="flex-[2] min-w-0 w-full">
-              <h1 className="text-3xl font-bold mb-4">
-                Miraibo Go - Pal-like open-world survival game
-              </h1>
+              <h1 className="text-3xl font-bold mb-4">{t("hero.heading")}</h1>
               <p className="text-base text-zinc-700 mb-6">
-                Dive into the world of Miraibo Go, embark on an epic adventure,
-                uncover hidden treasures, conquer the Miraibo world, battle
-                fierce opponents.
+                {t("hero.parameter")}
               </p>
               <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
                 {actionLinks.map(({ icon: Icon, ...item }, i) => (
@@ -133,7 +112,7 @@ export default function Page() {
                     <Icon className="mr-2" size={36} />
                     <div>
                       <p className="text-xs leading-none text-zinc-100">
-                        Get it on
+                        {t("hero.get-it-on")}
                       </p>
                       <p className="text-sm leading-none font-medium whitespace-nowrap">
                         {item.label}
@@ -143,8 +122,7 @@ export default function Page() {
                 ))}
               </div>
               <p className="text-xs text-zinc-500 mt-2">
-                Miraibo Go is free to play on mobile devices and PC and offers
-                cross-platform gaming support.
+                {t("hero.sub-param")}
               </p>
             </div>
             <div className="flex-[2] xl:flex-[3] min-w-0 w-full aspect-video">
@@ -171,12 +149,10 @@ export default function Page() {
       <div className="container max-w-screen-xl">
         <div className="mb-8">
           <h2 className="text-3xl font-bold text-center mb-2">
-            What awaits you in Miraibo Go
+            {t("features.heading")}
           </h2>
           <p className="text-base text-zinc-700 text-center max-w-3xl mx-auto">
-            Fight, farm, build and work alongside mysterious creatures called
-            "Mira" in this completely new multiplayer, open world survival and
-            crafting game!
+            {t("features.parameter")}
           </p>
         </div>
 
@@ -186,9 +162,10 @@ export default function Page() {
             features.filter((_, i) => i % 2 !== 0),
           ].map((features, i) => {
             return (
-              <ul className="flex-1 min-w-0 flex flex-col gap-4">
-                {features.map((feature) => (
+              <ul key={i} className="flex-1 min-w-0 flex flex-col gap-4">
+                {features.map((feature, fi) => (
                   <li
+                    key={`${i}-${fi}`}
                     className={clsx("flex flex-col bg-white", {
                       "md:flex-col-reverse": i % 2 !== 0,
                     })}
@@ -220,12 +197,10 @@ export default function Page() {
       <div className="container mb-16">
         <div className="mb-8">
           <h2 className="text-3xl font-bold text-center mb-2">
-            Dive into the world of Miraibo Go
+            {t("dives.heading")}
           </h2>
           <p className="text-base text-zinc-700 text-center max-w-3xl mx-auto">
-            Discover a new kind of Pokémon experience with Miraibo Go! Capture
-            wild Mira, and challenge powerful bosses in this innovative
-            open-world game.
+            {t("dives.parameter")}
           </p>
         </div>
 
@@ -244,23 +219,20 @@ export default function Page() {
       <div className="container">
         <div className="max-w-screen-md mx-auto pb-16">
           <h2 className="text-3xl font-bold text-center mb-2">
-            Miraibo Go Creator Program
+            {t("creator-program.heading")}
           </h2>
           <p className="text-base text-zinc-700 text-center max-w-3xl mx-auto">
-            The Miraibo Go Creator Program is a unique community of content
-            creators focused on producing engaging and high-quality content for
-            the dynamic world of Miraibo!
+            {t("creator-program.parameter")}
           </p>
           <div className="max-w-screen-sm mt-6 mx-auto">
             <a
               className="w-96 mx-auto flex items-center justify-center bg-[#2a5fb8] text-white rounded p-2 mb-4"
               href="#"
             >
-              Learn More for Miraibo Go Creator Program
+              {t("creator-program.learn-more")}
             </a>
             <p className="text-xs text-center text-zinc-600">
-              Whether you're a Youtuber, Streamer or Blogger, we want to build
-              the world of Miraibo Go with you.
+              {t("creator-program.sub-param")}
             </p>
           </div>
         </div>
@@ -270,23 +242,22 @@ export default function Page() {
         <div className="container max-w-screen-xl py-16">
           <div className="mb-8">
             <h2 className="text-3xl font-bold text-center mb-2">
-              Miraibo Go Loved by people worldwide
+              {t("social-proof.heading")}
             </h2>
             <p className="text-base text-zinc-700 text-center max-w-3xl mx-auto">
-              Join the Miraibo Go craze and explore, fight, build and work with
-              Mira!
+              {t("social-proof.parameter")}
             </p>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             {userReviewList.map((reviewList, i) => {
               return (
-                <ul className="flex flex-col gap-4">
-                  {reviewList.map((reviewItem) => {
+                <ul key={i} className="flex flex-col gap-4">
+                  {reviewList.map((reviewItem, ri) => {
                     return (
                       <li
                         className="p-4 bg-white rounded border border-zinc-100 relative shadow-lg shadow-zinc-200/30"
-                        key={i}
+                        key={`${i}-${ri}`}
                       >
                         <p className="font-bold text-base">
                           {reviewItem.title}
@@ -309,27 +280,51 @@ export default function Page() {
       <div className="bg-white">
         <div className="container max-w-screen-xl py-16">
           <h2 className="text-3xl font-bold text-center mb-2">
-            Miraibo Go FAQs
+            {t("faqs.heading")}
           </h2>
 
-          <div>
-            <h3 className="text-xl text-zinc-700 text-center max-w-3xl mx-auto">
-              About Miraibo Go Game Content
-            </h3>
-            <ul className="max-w-2xl w-full mx-auto mt-4">
-              {faqs.map((faq, i) => (
-                <li className="mb-4 last-of-type:mb-0" key={i}>
-                  <h4 className="text-lg font-bold">{faq.question}</h4>
-                  <p>{faq.answer}</p>
-                </li>
-              ))}
-            </ul>
-          </div>
+          {loaderData.messages.faqs.sub.map((item, i) => {
+            return (
+              <div key={i}>
+                <h3 className="text-xl text-zinc-700 text-center max-w-3xl mx-auto">
+                  {item.heading}
+                </h3>
+                <ul className="max-w-2xl w-full mx-auto mt-4">
+                  {item.list.map((faq, i) => (
+                    <li className="mb-4 last-of-type:mb-0" key={i}>
+                      <h4 className="text-lg font-bold">{faq.question}</h4>
+                      <p>{faq.answer}</p>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            );
+          })}
         </div>
       </div>
     </div>
   );
 }
+
+const actionLinks = [
+  {
+    icon: IconBrandAppstore,
+    label: "App Store",
+    href: "https://apps.apple.com/us/app/miraibo-go/id6547850275",
+  },
+  {
+    icon: IconBrandGooglePlay,
+    label: "Google Play",
+    href: "https://play.google.com/store/apps/details?id=com.dream.miraibo",
+  },
+  {
+    icon: IconBrandWindows,
+    label: "PC Platform",
+    href: "https://miraibo.onelink.me/Z2Cz/uczpnr9s",
+  },
+];
+
+const featuresThumbnail = [Features1, Features3, Features4, Features5];
 
 const userReviewList: {
   title: string;
@@ -406,42 +401,4 @@ const userReviewList: {
       user: "Yoshiality",
     },
   ],
-];
-
-const faqs = [
-  {
-    question: "Can I play Miraibo Go with my friends?",
-    answer:
-      "Yes, Miraibo Go has full shared-world multiplayer. you can play the game with your friends!",
-  },
-
-  {
-    question: "Where can I play Miraibo Go?",
-    answer:
-      "Miraibo Go is currently playable PC, iOS Device, Android Device with crossplay support.",
-  },
-
-  {
-    question: "Can I play Miraibo Go on different devices?",
-    answer:
-      "Yes, Miraibo Go offers cross-platform play support so the adventure can enjoyed at home and on the go, and the game is free to play on both mobile and PC.",
-  },
-
-  {
-    question: "Do Mira evolve in Miraibo Go?",
-    answer:
-      "No, miras in Miraibo Go do not evolve. What you see is what you get.",
-  },
-
-  {
-    question: "How many Mira in Miraibo Go?",
-    answer:
-      "The hundreds Miras can be battled and caught across an expansive Miraibo Go open world",
-  },
-
-  {
-    question: "Does Miraibo Go support crossplay?",
-    answer:
-      "Yes, Miraibo Go offers cross-platform play support, you can enjoy it at home and on the go.",
-  },
 ];

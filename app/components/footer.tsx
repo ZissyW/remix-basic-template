@@ -2,9 +2,10 @@ import clsx from "clsx";
 import { NavLink } from "@remix-run/react";
 import NavLogo from "~/assets/nav_logo.webp?url";
 
-interface FooterProps
-  extends Omit<React.ComponentProps<"footer">, "children"> {}
-export const Footer = ({ className, ...props }: FooterProps) => {
+interface FooterProps extends Omit<React.ComponentProps<"footer">, "children"> {
+  navLinks: { label: string; path: string }[];
+}
+export const Footer = ({ className, navLinks, ...props }: FooterProps) => {
   return (
     <footer className={clsx(className)} {...props}>
       <div className="container">
@@ -38,9 +39,3 @@ export const Footer = ({ className, ...props }: FooterProps) => {
     </footer>
   );
 };
-
-const navLinks = [
-  { path: "/", label: "Home" },
-  { path: "/privacy-policy", label: "Privacy Policy" },
-  { path: "/terms-of-service", label: "Terms of Service" },
-];

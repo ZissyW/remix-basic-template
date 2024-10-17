@@ -1,20 +1,15 @@
 import clsx from "clsx";
 import { useMemo, useState } from "react";
-import { useWindowScroll } from "@uidotdev/usehooks";
 import { NavLink } from "@remix-run/react";
 import { IconMenu2, IconX } from "@tabler/icons-react";
+import { useWindowScroll } from "~/hooks";
 
 import NavLogo from "~/assets/nav_logo.webp?url";
 
-const navLinks = [
-  { path: "/", label: "Home" },
-  { path: "/privacy-policy", label: "Privacy Policy" },
-  { path: "/terms-of-service", label: "Terms of Service" },
-];
-
-interface HeaderProps
-  extends Omit<React.ComponentProps<"header">, "children"> {}
-export const Header = ({ className, ...props }: HeaderProps) => {
+interface HeaderProps extends Omit<React.ComponentProps<"header">, "children"> {
+  navLinks: { path: string; label: string }[];
+}
+export const Header = ({ className, navLinks, ...props }: HeaderProps) => {
   const [{ y }] = useWindowScroll();
 
   const bgOpacity = useMemo(() => {
@@ -35,15 +30,15 @@ export const Header = ({ className, ...props }: HeaderProps) => {
       {...props}
     >
       <div className="h-full flex items-center container">
-        <div className="h-full">
+        <div className="h-3/4">
           <img
-            className="h-3/4 object-contain"
+            className="h-full object-contain"
             src={NavLogo}
             alt="Miraibo Go Logo"
           />
         </div>
         <div className="grow" />
-        <MobileNav className="md:hidden" />
+        <MobileNav className="md:hidden" navLinks={navLinks} />
         <nav className="hidden md:flex gap-4">
           {navLinks.map((link) => (
             <NavLink className="hover:underline" to={link.path} key={link.path}>
@@ -56,16 +51,17 @@ export const Header = ({ className, ...props }: HeaderProps) => {
   );
 };
 
-interface MobileNavProps
-  extends Omit<React.ComponentProps<"div">, "children"> {}
-const MobileNav = ({ className, ...props }: MobileNavProps) => {
+interface MobileNavProps extends Omit<React.ComponentProps<"div">, "children"> {
+  navLinks: HeaderProps["navLinks"];
+}
+const MobileNav = ({ className, navLinks, ...props }: MobileNavProps) => {
   const [visible, setVisible] = useState(false);
 
   const open = () => setVisible(true);
   const close = () => setVisible(false);
 
   return (
-    <div className={clsx(className)}>
+    <div className={clsx(className)} {...props}>
       <div>
         <IconMenu2 onClick={open} />
       </div>

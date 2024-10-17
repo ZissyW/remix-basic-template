@@ -1,16 +1,42 @@
-import type { LinksFunction } from "@remix-run/cloudflare";
+import type {
+  MetaFunction,
+  MetaDescriptor,
+  LoaderFunctionArgs,
+} from "@remix-run/cloudflare";
+import { createSeoMetas } from "~/utils/seo";
 
-export const links: LinksFunction = () => [
-  {
-    rel: "canonical",
-    href: "https://miraibogo.org/terms-of-service",
-    hrefLang: "en",
-  },
-];
+export const meta: MetaFunction<typeof loader> = ({ data }) => {
+  if (!data) return [];
+
+  const meta: MetaDescriptor[] = [
+    { title: data.meta.title },
+    {
+      name: "description",
+      content: data.meta.description,
+    },
+  ];
+
+  meta.push(...data.seoMetas);
+
+  return meta;
+};
+
+export const loader = async ({ request }: LoaderFunctionArgs) => {
+  const seoMetas = createSeoMetas(new URL(request.url), true);
+
+  const meta = {
+    title: "Terms of Service for Miraigo Go",
+    description:
+      "Welcome to miraibogo.org! These Terms of Service (\"Terms\") govern your use of the Miraibo Go website located, including all content, services, and products available at or through the website.",
+  };
+
+  return { meta, seoMetas };
+};
+
 export default function Page() {
   return (
     <div className="pt-24 md:pt-32">
-      <div className="container max-w-screen-lg">
+      <div className="container">
         <article>
           <h1 className="text-3xl font-bold mb-2">
             Terms of Service for Miraigo Go
@@ -23,10 +49,10 @@ export default function Page() {
               day: "numeric",
             })}
           </p>
-          <div className="mt-8">
+          <div className="mt-8 max-w-5xl">
             <p>
               Welcome to miraibogo.org! These Terms of Service ("Terms") govern
-              your use of the PokéRogue website located at{" "}
+              your use of the Miraibo Go website located at{" "}
               <a
                 className="underline"
                 href="https://miraibogo.org/"
