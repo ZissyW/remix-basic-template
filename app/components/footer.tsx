@@ -10,8 +10,8 @@ export const Footer = ({ className, navLinks, ...props }: FooterProps) => {
   const loaderData = useRootLoaderData();
   return (
     <footer className={clsx(className)} {...props}>
-      <div className="container">
-        <div className="flex flex-col items-center justify-center pt-16 pb-8">
+      <div className="container text-white">
+        <div className="flex flex-col items-center justify-center py-8">
           <div className="h-20">
             <img
               className="h-3/4 object-contain"
@@ -19,7 +19,7 @@ export const Footer = ({ className, navLinks, ...props }: FooterProps) => {
               alt="Miraibo Go Logo"
             />
           </div>
-          <nav className="flex gap-4">
+          <nav className="flex gap-4 flex-wrap overflow-hidden">
             {navLinks.map((link) => (
               <Link
                 className="hover:underline"
@@ -33,7 +33,7 @@ export const Footer = ({ className, navLinks, ...props }: FooterProps) => {
           </nav>
         </div>
       </div>
-      <div className="border-b border-zinc-200" />
+      <div className="border-b border-zinc-800" />
       <div className="container py-4 gap-2 flex items-center flex-col md:flex-row-reverse">
         <div className="flex flex-wrap gap-4">
           {locales.map((locale) => {
@@ -53,7 +53,7 @@ export const Footer = ({ className, navLinks, ...props }: FooterProps) => {
           })}
         </div>
         <div className="grow" />
-        <p className="text-sm text-zinc-700">
+        <p className="text-sm text-zinc-200">
           Copyright © 2024 miraibgo.org All rights reserved.
         </p>
       </div>

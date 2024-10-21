@@ -83,47 +83,41 @@ const value = {
     faqs: {
       heading: "Miraibo Go FAQs",
       parameter: "",
-      sub: [
+      list: [
         {
-          heading: "About Miraibo Go Game Content",
-          parameter: "",
-          list: [
-            {
-              question: "Can I play Miraibo Go with my friends?",
-              answer:
-                "Yes, Miraibo Go has full shared-world multiplayer. you can play the game with your friends!",
-            },
+          question: "Can I play Miraibo Go with my friends?",
+          answer:
+            "Yes, Miraibo Go has full shared-world multiplayer. you can play the game with your friends!",
+        },
 
-            {
-              question: "Where can I play Miraibo Go?",
-              answer:
-                "Miraibo Go is currently playable PC, iOS Device, Android Device with crossplay support.",
-            },
+        {
+          question: "Where can I play Miraibo Go?",
+          answer:
+            "Miraibo Go is currently playable PC, iOS Device, Android Device with crossplay support.",
+        },
 
-            {
-              question: "Can I play Miraibo Go on different devices?",
-              answer:
-                "Yes, Miraibo Go offers cross-platform play support so the adventure can enjoyed at home and on the go, and the game is free to play on both mobile and PC.",
-            },
+        {
+          question: "Can I play Miraibo Go on different devices?",
+          answer:
+            "Yes, Miraibo Go offers cross-platform play support so the adventure can enjoyed at home and on the go, and the game is free to play on both mobile and PC.",
+        },
 
-            {
-              question: "Do Mira evolve in Miraibo Go?",
-              answer:
-                "No, miras in Miraibo Go do not evolve. What you see is what you get.",
-            },
+        {
+          question: "Do Mira evolve in Miraibo Go?",
+          answer:
+            "No, miras in Miraibo Go do not evolve. What you see is what you get.",
+        },
 
-            {
-              question: "How many Mira in Miraibo Go?",
-              answer:
-                "The hundreds Miras can be battled and caught across an expansive Miraibo Go open world",
-            },
+        {
+          question: "How many Mira in Miraibo Go?",
+          answer:
+            "The hundreds Miras can be battled and caught across an expansive Miraibo Go open world",
+        },
 
-            {
-              question: "Does Miraibo Go support crossplay?",
-              answer:
-                "Yes, Miraibo Go offers cross-platform play support, you can enjoy it at home and on the go.",
-            },
-          ],
+        {
+          question: "Does Miraibo Go support crossplay?",
+          answer:
+            "Yes, Miraibo Go offers cross-platform play support, you can enjoy it at home and on the go.",
         },
       ],
     },

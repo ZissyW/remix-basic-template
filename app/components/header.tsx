@@ -23,7 +23,7 @@ export const Header = ({ className, navLinks, ...props }: HeaderProps) => {
   return (
     <header
       className={clsx(
-        "fixed top-0 inset-x-0 transition-all bg-transparent md:data-[scrolled=true]:backdrop-blur-[2px] data-[scrolled=true]:bg-white/80 z-20",
+        "fixed top-0 inset-x-0 transition-all md:data-[scrolled=true]:backdrop-blur-[2px] bg-zinc-900/80 z-20 text-white border-b border-zinc-800",
         className
       )}
       data-scrolled={bgOpacity > 0.8}

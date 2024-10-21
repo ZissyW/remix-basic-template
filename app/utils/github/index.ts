@@ -11,6 +11,8 @@ export async function fetchMarkdownFromGithubMD(
 ): Promise<FetchMarkdownFileResponse | undefined> {
   const url = `https://github-md.com/${owner}/${repo}/${branch}/${fileName}`;
 
+  console.log("url", url);
+
   const response = await fetch(url);
   if (!response.ok || response.status !== 200) {
     if (response.status === 404) return undefined;
@@ -48,11 +50,17 @@ function convertGitHubUrlToApiUrl(url: string): string {
   return `https://api.github.com/repos/${owner}/${repo}`;
 }
 
-// 更新后的 fetchRepoContents 函数
+// 更新后的 fetchRepoContents 函数，支持分页
 export async function fetchRepoContents(
   repoUrl: string,
-  path: string = ""
-): Promise<GitHubContentItem[]> {
+  path: string = "",
+  page: number = 1,
+  limit: number = -1
+): Promise<{
+  items: GitHubContentItem[];
+  hasMore: boolean;
+  totalPages: number;
+}> {
   const apiUrl = convertGitHubUrlToApiUrl(repoUrl);
 
   const headers = new Headers();
@@ -67,8 +75,16 @@ export async function fetchRepoContents(
     );
   }
 
-  const data: GitHubContentItem[] = await response.json();
-  return data;
+  const allData: GitHubContentItem[] = await response.json();
+  const startIndex = limit < 0 ? 0 : (page - 1) * limit;
+  const endIndex = limit < 0 ? allData.length : startIndex + limit;
+  const paginatedData = allData.slice(startIndex, endIndex);
+
+  return {
+    items: paginatedData,
+    totalPages: limit < 0 ? 1 : Math.ceil(allData.length / limit),
+    hasMore: limit >= 0 && endIndex < allData.length,
+  };
 }
 
 export async function fetchMDContent(

@@ -1,10 +1,16 @@
 import { fetchRepoContents, fetchMDContent } from "~/utils/github";
 import { defaultLocale } from "~/i18n";
 
-export const getBlogList = async () => {
+export const getBlogList = async (
+  path: string = "article",
+  page: number = 1,
+  limit: number = -1
+) => {
   const result = await fetchRepoContents(
     "https://github.com/ZissyW/remix-basic-template",
-    "blogs"
+    path,
+    page,
+    limit
   );
   return result;
 };
@@ -15,7 +21,7 @@ export const getBlogContent = async (
 ) => {
   const result = await fetchMDContent(
     "https://github.com/ZissyW/remix-basic-template",
-    "blogs",
+    "article",
     `${path}/${lang}.md`
   );
   return result;

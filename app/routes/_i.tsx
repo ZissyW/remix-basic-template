@@ -7,12 +7,10 @@ import {
 import type { LoaderFunctionArgs } from "@remix-run/cloudflare";
 import { Outlet, redirect } from "@remix-run/react";
 
-import { Header, Footer } from "~/components/_i";
+import { Header, Footer } from "~/components";
 
 import { defaultLocale, locales } from "~/i18n";
 import { getMessage, useTranslations } from "~/locales";
-
-import { fetchMDContent } from "~/utils/github";
 
 export async function loader({ request, params }: LoaderFunctionArgs) {
   const lang = params?.lang;
@@ -24,10 +22,19 @@ export async function loader({ request, params }: LoaderFunctionArgs) {
   }
 
   if (lang && !locales.includes(lang)) {
-    throw new Response(null, {
-      status: 404,
-      statusText: "Not Found",
-    });
+    const url = new URL(request.url);
+
+    let isArticle = false;
+    if (url.pathname.startsWith("/blogs")) {
+      isArticle = true;
+    }
+
+    if (!isArticle) {
+      throw new Response(null, {
+        status: 404,
+        statusText: "Not Found",
+      });
+    }
   }
 
   const messages = await getMessage(lang);
@@ -53,7 +60,7 @@ export function ErrorBoundary() {
   }));
 
   return (
-    <div className="h-screen flex flex-col">
+    <div className="h-screen flex flex-col bg-zinc-950">
       <Header className="h-20" navLinks={headerNavLinks} />
       {isError404 && (
         <main className="flex-1 min-h-0 pt-20 flex flex-col justify-center">
@@ -88,7 +95,6 @@ export function ErrorBoundary() {
 
 export default function Layout() {
   const loaderData = useLoaderData<typeof loader>();
-
   const t = useTranslations(loaderData.messages);
 
   const headerNavLinks = headerLinks.map((item) => ({
@@ -102,22 +108,26 @@ export default function Layout() {
   }));
 
   return (
-    <div>
+    <div className="min-h-screen flex flex-col">
       <Header className="h-20" navLinks={headerNavLinks} />
-      <main>{<Outlet />}</main>
+      <main className="flex-1">{<Outlet />}</main>
       <Footer navLinks={footerNavLinks} />
     </div>
   );
 }
 
 const headerLinks = [
-  { path: "/", key: "home" },
+  { path: "/", key: "index" },
+  { path: "/blogs", key: "blogs" },
   { path: "/#features", key: "features" },
   { path: "/#review", key: "review" },
   { path: "/#faqs", key: "faqs" },
 ];
 const footerLinks = [
-  { path: "/", key: "home" },
+  { path: "/", key: "index" },
+  { path: "/blogs", key: "blogs" },
+  { path: "/about", key: "about" },
   { path: "/privacy-policy", key: "privacy-policy" },
   { path: "/terms-of-service", key: "terms-of-service" },
+  { path: "/contact", key: "contact" },
 ];

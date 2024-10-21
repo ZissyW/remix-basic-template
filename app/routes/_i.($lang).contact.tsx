@@ -25,7 +25,7 @@ export const meta: MetaFunction<typeof loader> = ({ data }) => {
 
 export const loader = async ({ request, params }: LoaderFunctionArgs) => {
   const seoMetas = createSeoMetas(new URL(request.url), true);
-  const result = await getBlogContent("about", params.lang);
+  const result = await getBlogContent("contact", params.lang);
 
   if (!result) {
     throw new Response(null, {
