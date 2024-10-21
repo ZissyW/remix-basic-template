@@ -12,8 +12,16 @@ import { Header, Footer } from "~/components/_i";
 import { defaultLocale, locales } from "~/i18n";
 import { getMessage, useTranslations } from "~/locales";
 
+import { fetchMDContent } from "~/utils/github";
+
 export async function loader({ request, params }: LoaderFunctionArgs) {
   const lang = params?.lang;
+
+  const result = await fetchMDContent(
+    "https://github.com/remix-run/remix",
+    "docs",
+    "index.md"
+  );
 
   if (lang && lang === defaultLocale) {
     const url = new URL(request.url);
@@ -30,7 +38,7 @@ export async function loader({ request, params }: LoaderFunctionArgs) {
 
   const messages = await getMessage(lang);
 
-  return { messages };
+  return { messages, result };
 }
 
 export function ErrorBoundary() {
@@ -86,6 +94,7 @@ export function ErrorBoundary() {
 
 export default function Layout() {
   const loaderData = useLoaderData<typeof loader>();
+
   const t = useTranslations(loaderData.messages);
 
   const headerNavLinks = headerLinks.map((item) => ({
@@ -97,6 +106,8 @@ export default function Layout() {
     path: item.path,
     label: t(`footer.nav.${item.key}`),
   }));
+
+  console.log("result", loaderData.result);
 
   return (
     <div>

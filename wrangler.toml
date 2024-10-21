@@ -1,12 +1,12 @@
 #:schema node_modules/wrangler/config-schema.json
-name = "miraibo-go"
+name = "basic-template"
 compatibility_date = "2024-10-11"
 main = "./build/worker/index.js"
 assets = { directory = "./build/client" }
 
 routes = [
-  { pattern = "miraibogo.org", custom_domain = true },
-  { pattern = "www.miraibogo.org", custom_domain = true }
+  { pattern = "basic-template.org", custom_domain = true },
+  { pattern = "www.basic-template.org", custom_domain = true }
 ]
 
 # Workers Logs

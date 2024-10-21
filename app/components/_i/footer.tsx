@@ -42,6 +42,7 @@ export const Footer = ({ className, navLinks, ...props }: FooterProps) => {
             return (
               <Link
                 to="/"
+                key={locale}
                 lang={locale}
                 className="flex-shrink-0 text-sm hover:underline"
                 reloadDocument
