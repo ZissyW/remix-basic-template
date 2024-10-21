@@ -17,12 +17,6 @@ import { fetchMDContent } from "~/utils/github";
 export async function loader({ request, params }: LoaderFunctionArgs) {
   const lang = params?.lang;
 
-  const result = await fetchMDContent(
-    "https://github.com/remix-run/remix",
-    "docs",
-    "index.md"
-  );
-
   if (lang && lang === defaultLocale) {
     const url = new URL(request.url);
     const pathname = url.pathname.split("/").slice(2).join("/");
@@ -38,7 +32,7 @@ export async function loader({ request, params }: LoaderFunctionArgs) {
 
   const messages = await getMessage(lang);
 
-  return { messages, result };
+  return { messages };
 }
 
 export function ErrorBoundary() {
@@ -106,8 +100,6 @@ export default function Layout() {
     path: item.path,
     label: t(`footer.nav.${item.key}`),
   }));
-
-  console.log("result", loaderData.result);
 
   return (
     <div>
