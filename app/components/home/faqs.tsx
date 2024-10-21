@@ -50,7 +50,7 @@ export const FAQsSection = ({
               />
             </div>
             <div
-              className="border-t border-zinc-950/30 transition-all grid grid-flow-row grid-rows-[0] data-[active=true]:grid-rows-1"
+              className="border-t border-zinc-950/30 bg-black/20 transition-all grid grid-flow-row grid-rows-[0] data-[active=true]:grid-rows-1"
               data-active={activeLine === i}
             >
               <p className="p-4 text-sm text-zinc-400">{faq.answer}</p>
