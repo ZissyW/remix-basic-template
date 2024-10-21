@@ -1,6 +1,6 @@
 type FetchMarkdownFileResponse = {
   attributes: Record<string, string | number | boolean>;
-  json: string;
+  html: string;
 };
 
 export async function fetchMarkdownFromGithubMD(
@@ -81,7 +81,7 @@ export async function fetchMDContent(
   const [owner, repo] = urlParts;
 
   // 默认使用 'main' 分支，如果需要可以修改
-  const branch = "main";
+  const branch = "master";
 
   // 组合完整的文件路径
   const fullPath = path ? `${path}/${fileName}` : fileName;

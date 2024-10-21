@@ -41,7 +41,7 @@ export const loader = async ({ request, params }: LoaderFunctionArgs) => {
     createdAt: result.attributes.createdAt as string | undefined,
   };
 
-  return { meta, seoMetas, html: result.json };
+  return { meta, seoMetas, html: result.html };
 };
 
 export default function Page() {
