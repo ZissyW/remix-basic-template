@@ -6,7 +6,7 @@ import type {
 import { useLoaderData } from "@remix-run/react";
 
 import { createSeoMetas } from "~/utils/seo";
-import { getBlogList } from "~/service/blogs";
+import { getBlogListKV } from "~/service/blogs";
 import { getMessage, getTranslations, LANG } from "~/locales";
 import { createBlogsContent } from "~/content/blogs";
 
@@ -37,10 +37,14 @@ export const meta: MetaFunction<typeof loader> = ({ data }) => {
   return meta;
 };
 
-export const loader = async ({ request, params }: LoaderFunctionArgs) => {
+export const loader = async ({
+  request,
+  context,
+  params,
+}: LoaderFunctionArgs) => {
   const seoMetas = createSeoMetas(new URL(request.url), true);
 
-  const result = await getBlogList("article/blogs");
+  const result = await getBlogListKV(context.cloudflare.env);
 
   if (!result) {
     throw new Response(null, {
@@ -73,11 +77,12 @@ export default function Page() {
       <HeroSection className="container pt-24 md:pt-32" {...content.hero} />
       <ArticleListSection
         className="container py-4 md:py-8"
-        list={list.items.map((item) => ({
-          title: "Test title",
-          description: item.name,
-          path: item.name,
-          createdAt: "2024-10-10",
+        list={list.map((item) => ({
+          title: item.title,
+          description: item.description,
+          path: item.slug,
+          createdAt: item.createdAt,
+          cover: item.cover,
         }))}
       />
     </div>

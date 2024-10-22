@@ -65,6 +65,7 @@ export async function fetchRepoContents(
 
   const headers = new Headers();
   headers.set("Accept", "application/vnd.github.v3+json");
+  headers.set("User-Agent", "ZissyW");
 
   const url = new URL(`${apiUrl}/contents/${path}`.replace(/\/+/g, "/"));
 

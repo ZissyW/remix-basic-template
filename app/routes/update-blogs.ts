@@ -1,20 +1,17 @@
 import { type ActionFunctionArgs, json } from "@remix-run/cloudflare";
-import { getBlogList, getBlogContent } from "~/service/blogs";
+import {
+  getBlogList,
+  getBlogContent,
+  BlogListItem,
+  setBlogListKV,
+} from "~/service/blogs";
 
-interface ResultItem {
-  cover: string;
-  lang: string;
-  slug: string;
-  title: string;
-  description: string;
-  createdAt: string;
-}
-export async function action({ request }: ActionFunctionArgs) {
+export async function action({ request, context }: ActionFunctionArgs) {
   if (request.method.toLowerCase() !== "post") {
     return json({ error: "Method not allowed" }, { status: 405 });
   }
 
-  const result: ResultItem[] = [];
+  const result: BlogListItem[] = [];
 
   const blogs = await getBlogList("article/blogs");
 
@@ -23,7 +20,7 @@ export async function action({ request }: ActionFunctionArgs) {
     for (const lang of langList.items) {
       const content = await getBlogContent(
         `blogs/${blog.name}`,
-        lang.name
+        lang.name.replace(".md", "")
       ).catch(() => null);
       if (!content) continue;
 
@@ -38,5 +35,10 @@ export async function action({ request }: ActionFunctionArgs) {
     }
   }
 
-  return json(result);
+  try {
+    await setBlogListKV(context.cloudflare.env, result);
+    return json({ success: true });
+  } catch (e) {
+    return json(e);
+  }
 }

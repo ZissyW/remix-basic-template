@@ -4,10 +4,8 @@ compatibility_date = "2024-10-11"
 main = "./build/worker/index.js"
 assets = { directory = "./build/client" }
 
-routes = [
-  { pattern = "basic-template.org", custom_domain = true },
-  { pattern = "www.basic-template.org", custom_domain = true }
-]
+[vars]
+DOMAIN = "https://basic-template.vercel.app"
 
 # Workers Logs
 # Docs: https://developers.cloudflare.com/workers/observability/logs/workers-logs/
