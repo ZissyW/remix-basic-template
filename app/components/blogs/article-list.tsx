@@ -1,5 +1,7 @@
 import clsx from "clsx";
+import dayjs from "dayjs";
 import { Link } from "~/i18n";
+import { formatDate } from "~/utils";
 
 interface ArticleListSectionProps extends React.ComponentProps<"section"> {
   heading?: string;
@@ -53,7 +55,7 @@ export const ArticleListSection = ({
               </div>
               <div className="p-4 bg-black/20">
                 <div className="text-sm text-zinc-400">
-                  {popluarItem.createdAt}
+                  {dayjs(popluarItem.createdAt).format("YYYY-MM-DD")}
                 </div>
                 <h2 className="text-lg font-bold line-clamp-1">
                   {popluarItem.title}

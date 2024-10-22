@@ -28,7 +28,6 @@ export const links: LinksFunction = () => {
 
 export async function loader({ params }: LoaderFunctionArgs) {
   const lang = params?.lang ?? defaultLocale;
-
   return { lang: locales.includes(lang) ? lang : defaultLocale };
 }
 

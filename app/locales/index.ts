@@ -1,9 +1,14 @@
 import { merge } from "lodash-es";
 import { useMemo } from "react";
-import { defaultLocale } from "~/i18n";
+import { defaultLocale, locales } from "~/i18n";
 import defaultLang from "./en";
 
 export type LANG = typeof defaultLang;
+
+export const getLocale = (lang?: string) => {
+  if (lang && locales.includes(lang)) return lang;
+  return defaultLocale;
+};
 
 export const getMessage = async <T = any>(
   lang?: string,
@@ -81,7 +86,7 @@ export const getTranslations = <
   message: M,
   scope?: S
 ) => {
-  return (key: ScopedKeys<M, S>): string => {
+  return (key: ScopedKeys<M, S>, replace?: Record<string, string>): string => {
     const keys = ((key ?? "") as string).split(".");
 
     let value: any = message;
@@ -91,7 +96,14 @@ export const getTranslations = <
     }
     keys.forEach((key) => (value = value?.[key]));
 
-    return value ?? `${scope ? `${scope}.` : ""}${key}`;
+    let result = value ?? `${scope ? `${scope}.` : ""}${key}`;
+    if (replace && Object.keys(replace).length) {
+      const keys = Object.keys(replace);
+      keys.forEach((key) => {
+        result = result.replace(new RegExp(key, "g"), replace[key]);
+      });
+    }
+    return result;
   };
 };
 

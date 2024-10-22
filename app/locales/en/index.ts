@@ -4,6 +4,9 @@ import blogs from "./blogs";
 const lang = {
   home,
   blogs,
+  article: {
+    publishedAt: "Published At {date}",
+  },
   header: {
     nav: {
       index: "Home",
