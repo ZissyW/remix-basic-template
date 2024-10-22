@@ -14,3 +14,7 @@ routes = [
 # Configuration: https://developers.cloudflare.com/workers/observability/logs/workers-logs/#enable-workers-logs
 [observability]
 enabled = true
+
+[[kv_namespaces]]
+binding = "KV"
+id = "1d78358bb39c4d4cabb80d02a928fd96"
