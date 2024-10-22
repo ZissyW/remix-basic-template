@@ -11,8 +11,6 @@ export async function fetchMarkdownFromGithubMD(
 ): Promise<FetchMarkdownFileResponse | undefined> {
   const url = `https://github-md.com/${owner}/${repo}/${branch}/${fileName}`;
 
-  console.log("url", url);
-
   const response = await fetch(url);
   if (!response.ok || response.status !== 200) {
     if (response.status === 404) return undefined;

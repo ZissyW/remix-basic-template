@@ -71,7 +71,6 @@ export const loader = async ({
 export default function Page() {
   const { list, content } = useLoaderData<typeof loader>();
 
-  console.log("list", list);
   return (
     <div>
       <HeroSection className="container pt-24 md:pt-32" {...content.hero} />
