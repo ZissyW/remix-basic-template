@@ -10,22 +10,21 @@ body {
     color-scheme: dark;
   }
 }
-
 article {
-  @apply leading-7 text-gray-700 dark:text-gray-300 max-w-prose mx-auto px-4;
+  @apply leading-7 text-gray-300 max-w-prose mx-auto px-4;
 }
 
 article h2 {
-  @apply text-2xl font-bold mt-8 mb-4 text-gray-900 dark:text-gray-100;
+  @apply text-2xl font-bold mt-8 mb-4 text-gray-100;
 }
 article h3 {
-  @apply text-xl font-bold mt-6 mb-3 text-gray-900 dark:text-gray-100;
+  @apply text-xl font-bold mt-6 mb-3 text-gray-100;
 }
 article h4 {
-  @apply text-lg font-semibold mt-4 mb-2 text-gray-900 dark:text-gray-100;
+  @apply text-lg font-semibold mt-4 mb-2 text-gray-100;
 }
 article h5 {
-  @apply text-base font-semibold mt-3 mb-2 text-gray-900 dark:text-gray-100;
+  @apply text-base font-semibold mt-3 mb-2 text-gray-100;
 }
 
 article p {
@@ -50,5 +49,5 @@ article li {
 }
 
 article a {
-  @apply text-blue-600 dark:text-blue-400 hover:underline;
+  @apply text-blue-400 hover:underline;
 }
