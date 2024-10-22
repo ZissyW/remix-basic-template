@@ -1,4 +1,5 @@
 import clsx from "clsx";
+import { chunk } from "lodash-es";
 
 interface ReviewsSectionProps extends React.ComponentProps<"section"> {
   heading?: string;
@@ -30,25 +31,34 @@ export const ReviewsSection = ({
           </p>
         </div>
       )}
-      <ul className="flex-1 min-w-0 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {list.map((feature, fi) => (
-          <li key={fi} className="bg-zinc-800 rounded">
-            <div className="flex flex-col h-full bg-black/20 p-6">
-              {/* <div className="w-10 h-10 mb-4">
-              {!feature.icon && (
-                <div className="w-full h-full bg-zinc-800 text-white flex items-center justify-center rounded">
-                  {fi + 1}
-                </div>
-              )}
-            </div> */}
-              <div>
-                <p className="text-lg font-bold mb-2">{feature.title}</p>
-                <p className="text-sm text-zinc-400">{feature.content}</p>
-              </div>
-            </div>
-          </li>
-        ))}
-      </ul>
+      <div className="flex-1 min-w-0 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {chunk(list, 3).map((reviews, i) => {
+          return (
+            <ul className="flex flex-col gap-6" key={`review-${i}`}>
+              {reviews.map((feature, fi) => (
+                <li
+                  key={`review-${i}-item-${fi}`}
+                  className="bg-zinc-800 rounded"
+                >
+                  <div className="flex flex-col h-full bg-black/20 p-6">
+                    {/* <div className="w-10 h-10 mb-4">
+                        {!feature.icon && (
+                          <div className="w-full h-full bg-zinc-800 text-white flex items-center justify-center rounded">
+                            {fi + 1}
+                          </div>
+                        )}
+                      </div> */}
+                    <div>
+                      <p className="text-lg font-bold mb-2">{feature.title}</p>
+                      <p className="text-sm text-zinc-400">{feature.content}</p>
+                    </div>
+                  </div>
+                </li>
+              ))}
+            </ul>
+          );
+        })}
+      </div>
     </section>
   );
 };

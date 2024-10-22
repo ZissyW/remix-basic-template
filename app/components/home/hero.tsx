@@ -21,13 +21,15 @@ interface HeroSectionProps extends React.ComponentProps<"section"> {
   actionText: string;
   actionDesc: string;
   actionLink?: string;
-  shareText?: string;
-  showShare?: boolean;
-  shareUrl?: string;
+
   iframeType: "youtube" | "game";
   iframeLink: string;
   iframeTitle: string;
   iframeCover?: string;
+
+  shareText?: string;
+  showShare?: boolean;
+  shareUrl?: string;
 }
 
 export const HeroSection = ({

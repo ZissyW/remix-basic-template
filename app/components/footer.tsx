@@ -5,8 +5,14 @@ import { localeData, locales, Link, useRootLoaderData } from "~/i18n";
 
 interface FooterProps extends Omit<React.ComponentProps<"footer">, "children"> {
   navLinks: { label: string; path: string }[];
+  copyright: string;
 }
-export const Footer = ({ className, navLinks, ...props }: FooterProps) => {
+export const Footer = ({
+  className,
+  navLinks,
+  copyright,
+  ...props
+}: FooterProps) => {
   const loaderData = useRootLoaderData();
   return (
     <footer className={clsx(className)} {...props}>
@@ -19,7 +25,7 @@ export const Footer = ({ className, navLinks, ...props }: FooterProps) => {
               alt="Miraibo Go Logo"
             />
           </div>
-          <nav className="flex gap-4 flex-wrap overflow-hidden">
+          <nav className="flex gap-x-6 gap-y-2 flex-wrap overflow-hidden justify-center">
             {navLinks.map((link) => (
               <Link
                 className="hover:underline"
@@ -35,7 +41,7 @@ export const Footer = ({ className, navLinks, ...props }: FooterProps) => {
       </div>
       <div className="border-b border-zinc-800" />
       <div className="container py-4 gap-2 flex items-center flex-col md:flex-row-reverse">
-        <div className="flex flex-wrap gap-4">
+        <div className="flex flex-wrap gap-x-4 gap-y-2">
           {locales.map((locale) => {
             const localeItem = localeData.find((item) => item.code === locale);
             if (!localeItem) return null;
@@ -53,9 +59,7 @@ export const Footer = ({ className, navLinks, ...props }: FooterProps) => {
           })}
         </div>
         <div className="grow" />
-        <p className="text-sm text-zinc-200">
-          Copyright © 2024 miraibgo.org All rights reserved.
-        </p>
+        <p className="text-sm text-zinc-200">{copyright}</p>
       </div>
     </footer>
   );

@@ -1,10 +1,10 @@
 import clsx from "clsx";
 
 interface CallActionSectionProps extends React.ComponentProps<"section"> {
-  heading?: string;
-  description?: string;
-  buttonText?: string;
-  buttonLink?: string;
+  heading: string;
+  description: string;
+  buttonText: string;
+  buttonLink: string;
   sectionCover?: string;
 }
 export const CallActionSection = ({

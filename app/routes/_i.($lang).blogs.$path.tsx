@@ -7,6 +7,7 @@ import { useLoaderData } from "@remix-run/react";
 
 import { createSeoMetas } from "~/utils/seo";
 import { getBlogContent } from "~/service/blogs";
+import { defaultLocale } from "~/i18n";
 
 export const meta: MetaFunction<typeof loader> = ({ data }) => {
   if (!data) return [];
@@ -25,8 +26,11 @@ export const meta: MetaFunction<typeof loader> = ({ data }) => {
 };
 
 export const loader = async ({ request, params }: LoaderFunctionArgs) => {
+  let lang = params.lang;
+  if (lang === "blogs") lang = defaultLocale;
+
   const seoMetas = createSeoMetas(new URL(request.url), true);
-  const result = await getBlogContent(params.path!, params.lang);
+  const result = await getBlogContent(params.path!, lang);
 
   if (!result) {
     throw new Response(null, {
