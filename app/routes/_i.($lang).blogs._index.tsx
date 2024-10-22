@@ -40,7 +40,7 @@ export const meta: MetaFunction<typeof loader> = ({ data }) => {
 export const loader = async ({ request, params }: LoaderFunctionArgs) => {
   const seoMetas = createSeoMetas(new URL(request.url), true);
 
-  const result = await getBlogList();
+  const result = await getBlogList("/blogs");
 
   if (!result) {
     throw new Response(null, {

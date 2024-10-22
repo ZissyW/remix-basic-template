@@ -30,7 +30,7 @@ export const loader = async ({ request, params }: LoaderFunctionArgs) => {
   if (lang === "blogs") lang = defaultLocale;
 
   const seoMetas = createSeoMetas(new URL(request.url), true);
-  const result = await getBlogContent(params.path!, lang);
+  const result = await getBlogContent(`blogs/${params.path}`, lang);
 
   if (!result) {
     throw new Response(null, {
