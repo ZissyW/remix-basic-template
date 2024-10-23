@@ -70,7 +70,7 @@ const MobileNav = ({ className, navLinks, ...props }: MobileNavProps) => {
         data-visible={visible}
       >
         <div className="fixed top-0 inset-x-0 p-2 z-10">
-          <div className="bg-white rounded">
+          <div className="bg-zinc-800 rounded">
             <div className="p-2 flex items-center">
               <div>
                 <img
@@ -80,11 +80,11 @@ const MobileNav = ({ className, navLinks, ...props }: MobileNavProps) => {
                 />
               </div>
               <div className="grow" />
-              <div className="text-zinc-700">
+              <div className="text-white">
                 <IconX size={30} onClick={close} />
               </div>
             </div>
-            <div className="mt-4 p-2 pb-5">
+            <div className="pt-4 p-2 pb-5 bg-black/30">
               <nav className="flex flex-col gap-3">
                 {navLinks.map((link) => (
                   <Link

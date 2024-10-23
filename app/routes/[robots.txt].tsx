@@ -1,4 +1,7 @@
-export const loader = () => {
+import { LoaderFunctionArgs } from "@remix-run/cloudflare";
+
+export const loader = ({ request }: LoaderFunctionArgs) => {
+  const url = new URL(request.url);
   // handle "GET" request
   // set up our text content that will be returned in the response
   const robotText = `User-Agent:Googlebot
@@ -18,7 +21,7 @@ Allow: *
 User-Agent:*
 Disallow: /
 
-Sitemap: http://miraibogo.org/sitemap.xml`;
+Sitemap: ${url.origin}/sitemap.xml`;
 
   return new Response(robotText, {
     status: 200,

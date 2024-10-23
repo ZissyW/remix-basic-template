@@ -7,7 +7,7 @@ import { useLoaderData } from "@remix-run/react";
 
 import { createSeoMetas } from "~/utils/seo";
 import { getBlogListKV } from "~/service/blogs";
-import { getMessage, getTranslations, LANG } from "~/locales";
+import { getMessage, getTranslations, getLocale, LANG } from "~/locales";
 import { createBlogsContent } from "~/content/blogs";
 
 import { HeroSection, ArticleListSection } from "~/components/blogs";
@@ -42,9 +42,19 @@ export const loader = async ({
   context,
   params,
 }: LoaderFunctionArgs) => {
+  const lang = getLocale(params.lang);
   const seoMetas = createSeoMetas(new URL(request.url), true);
 
-  const result = await getBlogListKV(context.cloudflare.env);
+  const blogList = await getBlogListKV(context.cloudflare.env);
+  const result = blogList
+    .filter((item) => {
+      const blogLang = item.lang.replace(".md", "");
+      return blogLang === lang;
+    })
+    .sort(
+      (a, b) =>
+        new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
+    );
 
   if (!result) {
     throw new Response(null, {

@@ -1,29 +1,39 @@
 import type { LoaderFunctionArgs } from "@remix-run/cloudflare";
 import { locales, defaultLocale } from "~/i18n";
 
+import { getBlogListKV } from "~/service/blogs";
+
 const sitemaps = [
   {
     path: "/",
-    withI18N: true,
-    lastmod: new Date().toISOString(),
     priority: "1.0",
   },
   {
     path: "/privacy-policy",
-    withI18N: false,
-    lastmod: new Date("2024-10-15").toISOString(),
     priority: "0.9",
   },
   {
     path: "/terms-of-service",
-    withI18N: false,
-    lastmod: new Date("2024-10-15").toISOString(),
+    priority: "0.9",
+  },
+  {
+    path: "/about",
+    priority: "0.9",
+  },
+  {
+    path: "/contact",
+    priority: "0.9",
+  },
+  {
+    path: "/blogs",
     priority: "0.9",
   },
 ];
 
-export const loader = async ({ request, params }: LoaderFunctionArgs) => {
+export const loader = async ({ request, context }: LoaderFunctionArgs) => {
   const url = new URL(request.url);
+
+  const blogList = await getBlogListKV(context.cloudflare.env);
 
   const sitemapList = [] as {
     loc: String;
@@ -34,27 +44,32 @@ export const loader = async ({ request, params }: LoaderFunctionArgs) => {
   sitemaps.forEach((site) => {
     const pathname = site.path.startsWith("/") ? site.path.slice(1) : site.path;
 
-    if (site.withI18N) {
-      locales.forEach((locale) => {
-        const loc = [url.origin];
+    locales.forEach((locale) => {
+      const loc = [url.origin];
 
-        if (locale !== defaultLocale) loc.push(locale);
+      if (locale !== defaultLocale) loc.push(locale);
 
-        if (pathname) loc.push(pathname);
+      if (pathname) loc.push(pathname);
 
-        sitemapList.push({
-          loc: loc.join("/"),
-          lastmod: site.lastmod,
-          priority: site.priority,
-        });
-      });
-    } else {
       sitemapList.push({
-        loc: pathname ? [url.origin, pathname].join("/") : url.origin,
-        lastmod: site.lastmod,
+        loc: loc.join("/"),
+        lastmod: new Date().toISOString(),
         priority: site.priority,
       });
-    }
+    });
+  });
+
+  blogList.forEach((blog) => {
+    const loc = [url.origin];
+    const lang = blog.lang.replace(".md", "");
+    if (lang !== defaultLocale) loc.push(lang);
+    loc.push("blogs", blog.slug);
+
+    sitemapList.push({
+      loc: loc.join("/"),
+      lastmod: new Date(blog.createdAt).toISOString(),
+      priority: "0.8",
+    });
   });
 
   const content = `

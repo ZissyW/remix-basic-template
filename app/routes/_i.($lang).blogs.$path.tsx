@@ -4,7 +4,6 @@ import type {
   LoaderFunctionArgs,
 } from "@remix-run/cloudflare";
 import { useLoaderData } from "@remix-run/react";
-import { useLocale } from "~/hooks";
 
 import { getMessage, getTranslations, getLocale, LANG } from "~/locales";
 import { formatDate } from "~/utils";
@@ -55,7 +54,6 @@ export const loader = async ({ request, params }: LoaderFunctionArgs) => {
 };
 
 export default function Page() {
-  const locale = useLocale();
   const { html, meta } = useLoaderData<typeof loader>();
 
   return (
