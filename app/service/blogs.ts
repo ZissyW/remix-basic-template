@@ -1,5 +1,7 @@
 import { fetchRepoContents, fetchMDContent } from "~/utils/github";
 import { defaultLocale } from "~/i18n";
+import { getLocale } from "~/locales";
+import { type FetchMarkdownFileResponse } from "~/utils/github";
 
 export interface BlogListItem {
   cover: string;
@@ -26,6 +28,24 @@ export const getBlogListKV = async (env: Env) => {
 export const setBlogListKV = async (env: Env, value: BlogListItem[]) => {
   const host = new URL(env.DOMAIN).hostname;
   await env.KV.put(`${host}/blogs`, JSON.stringify(value));
+};
+
+export const getBlogItemKV = async (env: Env, slug: string, lang?: string) => {
+  const itemLang = getLocale(lang);
+
+  const host = new URL(env.DOMAIN).hostname;
+  const result = await env.KV.get(`${host}/blogs/${slug}/${itemLang}`);
+  return result ? (JSON.parse(result) as FetchMarkdownFileResponse) : null;
+};
+
+export const setBlogItemKV = async (
+  env: Env,
+  slug: string,
+  lang: string,
+  value: FetchMarkdownFileResponse
+) => {
+  const host = new URL(env.DOMAIN).hostname;
+  await env.KV.put(`${host}/blogs/${slug}/${lang}`, JSON.stringify(value));
 };
 
 export const getBlogList = async (

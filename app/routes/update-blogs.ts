@@ -4,6 +4,7 @@ import {
   getBlogContent,
   BlogListItem,
   setBlogListKV,
+  setBlogItemKV,
 } from "~/service/blogs";
 
 export async function action({ request, context }: ActionFunctionArgs) {
@@ -24,6 +25,13 @@ export async function action({ request, context }: ActionFunctionArgs) {
       ).catch(() => null);
       if (!content) continue;
 
+      await setBlogItemKV(
+        context.cloudflare.env,
+        blog.name,
+        lang.name.replace(".md", ""),
+        content
+      );
+
       result.push({
         title: content.attributes.title as string,
         description: content.attributes.description as string,
@@ -37,6 +45,7 @@ export async function action({ request, context }: ActionFunctionArgs) {
 
   try {
     await setBlogListKV(context.cloudflare.env, result);
+
     return json({ success: true });
   } catch (e) {
     return json(e);

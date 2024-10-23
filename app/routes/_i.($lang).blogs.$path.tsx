@@ -8,7 +8,7 @@ import { useLoaderData } from "@remix-run/react";
 import { getMessage, getTranslations, getLocale, LANG } from "~/locales";
 import { formatDate } from "~/utils";
 import { createSeoMetas } from "~/utils/seo";
-import { getBlogContent } from "~/service/blogs";
+import { getBlogContent, getBlogItemKV } from "~/service/blogs";
 
 export const meta: MetaFunction<typeof loader> = ({ data }) => {
   if (!data) return [];
@@ -26,11 +26,21 @@ export const meta: MetaFunction<typeof loader> = ({ data }) => {
   return meta;
 };
 
-export const loader = async ({ request, params }: LoaderFunctionArgs) => {
+export const loader = async ({
+  request,
+  context,
+  params,
+}: LoaderFunctionArgs) => {
   const lang = getLocale(params.lang);
 
   const seoMetas = createSeoMetas(new URL(request.url), true);
-  const result = await getBlogContent(`blogs/${params.path}`, lang);
+
+  const result = await getBlogItemKV(
+    context.cloudflare.env,
+    params.path!,
+    params.lang
+  );
+
   if (!result) {
     throw new Response(null, {
       status: 404,

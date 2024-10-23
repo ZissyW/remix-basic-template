@@ -1,4 +1,4 @@
-type FetchMarkdownFileResponse = {
+export type FetchMarkdownFileResponse = {
   attributes: Record<string, string | number | boolean>;
   html: string;
 };
