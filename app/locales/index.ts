@@ -100,7 +100,7 @@ export const getTranslations = <
     if (replace && Object.keys(replace).length) {
       const keys = Object.keys(replace);
       keys.forEach((key) => {
-        result = result.replace(new RegExp(key, "g"), replace[key]);
+        result = result.replace(new RegExp(`{${key}}`, "g"), replace[key]);
       });
     }
     return result;

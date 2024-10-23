@@ -1,7 +1,7 @@
 import type { MetaDescriptor } from "@remix-run/cloudflare";
 import { locales, defaultLocale } from "~/i18n";
 
-export const createLanguages = (url: URL, onlyDefaultLocale: boolean) => {
+export const createCanonical = (url: URL, onlyDefaultLocale: boolean) => {
   const languageList: MetaDescriptor[] = [];
 
   locales.forEach((locale) => {
@@ -14,7 +14,7 @@ export const createLanguages = (url: URL, onlyDefaultLocale: boolean) => {
 
     languageList.push({
       tagName: "link",
-      rel: "alternate",
+      rel: "canonical",
       href: href.join("/"),
       hrefLang: locale,
     });
@@ -23,7 +23,7 @@ export const createLanguages = (url: URL, onlyDefaultLocale: boolean) => {
   return languageList;
 };
 
-export const createCanonical = (
+export const createAlternate = (
   url: URL,
   locale: string,
   pathname: string
@@ -34,7 +34,7 @@ export const createCanonical = (
 
   return {
     tagName: "link",
-    rel: "canonical",
+    rel: "alternate",
     href: href.join("/"),
   };
 };
@@ -51,8 +51,8 @@ export const createSeoMetas = (
       : pathname
     : url.pathname.split("/").slice(2).join("/");
 
-  const language = createLanguages(url, onlyDefaultLocale ?? false);
-  const canonical = createCanonical(
+  const language = createCanonical(url, onlyDefaultLocale ?? false);
+  const canonical = createAlternate(
     url,
     onlyDefaultLocale ? defaultLocale : locale ?? defaultLocale,
     path
